@@ -1,5 +1,7 @@
 # 游戏库 · Game Library
 
+> 在线访问：**https://alaneve541.github.io/game-library/** ｜ 仓库：**https://github.com/Alaneve541/game-library**
+
 用 **Vite + React 18 + TypeScript** 写的一个小站：把我长期在玩的 20 款游戏做成可筛选、可搜索、可看详情的列表。没有用任何 UI 框架，样式全部手写。
 
 做这个项目的目的是补齐前端能力：之前只会写 Canvas 式的自绘界面（UE5 / Pygame），没做过 React 组件化与状态派生，这个项目把这块补上。
@@ -75,3 +77,22 @@ node verify.mjs                              # 截图落在 shots/
 - 数据是静态的，没有后端与持久化（收藏、打分不能改）
 - 没有路由，详情是弹层而不是独立 URL（刷新会回到列表）
 - 没做虚拟滚动：现在 20 条无压力，上千条需要换 `react-window`
+
+## 本地运行
+
+```bash
+npm install
+npm run dev        # http://localhost:5178/game-library/
+npm run build      # tsc --noEmit && vite build
+npm run verify     # 起 preview 后跑 23 项自动化断言（需本机 Edge）
+```
+
+`base` 固定为 `/game-library/`，本地与线上同路径，避免"本地能跑、线上 404"。
+
+## 自动化验证
+
+`verify.mjs` 用 puppeteer-core 驱动本机 Edge，覆盖 23 项断言：首屏分页数量、加载更多、搜索命中与空状态、筛选 chips 与清空、详情的四格与滚动锁定、Esc 关闭与滚动恢复、排序生效、430px 单列布局，并把 5 张截图落到 `shots/`。全部通过退出码为 0，可直接接进 CI。
+
+```bash
+APP_URL=https://alaneve541.github.io/game-library/ node verify.mjs
+```
